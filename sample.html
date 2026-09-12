@@ -49,6 +49,56 @@
       overflow-x: hidden;
     }
 
+    /* ================= CINEMATIC ATMOSPHERE ================= */
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.045;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      animation: filmGrain 0.18s steps(2) infinite;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9997;
+      pointer-events: none;
+      background:
+        radial-gradient(
+          ellipse at center,
+          transparent 45%,
+          rgba(0, 0, 0, 0.28) 100%
+        );
+    }
+
+    @keyframes filmGrain {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      25% {
+        transform: translate(1%, -1%);
+      }
+
+      50% {
+        transform: translate(-1%, 1%);
+      }
+
+      75% {
+        transform: translate(1%, 1%);
+      }
+
+      100% {
+        transform: translate(-1%, -1%);
+      }
+    }
+
     a {
       color: inherit;
       text-decoration: none;
@@ -58,7 +108,7 @@
       font-family: inherit;
     }
 
-    /* ---------------- NAVBAR ---------------- */
+    /* ================= NAVBAR ================= */
 
     nav {
       position: fixed;
@@ -73,6 +123,11 @@
       backdrop-filter: blur(18px);
       background: rgba(5, 5, 7, 0.55);
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+      /* cinematic glass */
+      box-shadow:
+        0 10px 50px rgba(0, 0, 0, 0.25),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.02);
     }
 
     .logo {
@@ -96,10 +151,31 @@
 
     .nav-links a {
       transition: 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -7px;
+      width: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        var(--purple),
+        var(--cyan)
+      );
+      transition: 0.35s ease;
+      box-shadow: 0 0 10px var(--purple);
     }
 
     .nav-links a:hover {
       color: white;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
     }
 
     .nav-btn {
@@ -116,9 +192,11 @@
       background: white;
       color: black;
       transform: translateY(-2px);
+      box-shadow:
+        0 10px 35px rgba(255,255,255,.15);
     }
 
-    /* ---------------- HERO ---------------- */
+    /* ================= HERO ================= */
 
     #hero {
       position: relative;
@@ -135,14 +213,66 @@
       z-index: 0;
     }
 
+    #three-container canvas {
+      filter:
+        contrast(1.08)
+        brightness(0.88)
+        saturate(1.15);
+    }
+
     .hero-overlay {
       position: absolute;
       inset: 0;
       z-index: 1;
       background:
-        radial-gradient(circle at center, transparent 0%, rgba(5,5,7,.3) 40%, #050507 90%),
-        linear-gradient(to bottom, rgba(5,5,7,.1), #050507);
+        radial-gradient(
+          circle at center,
+          transparent 0%,
+          rgba(5,5,7,.2) 35%,
+          rgba(5,5,7,.55) 65%,
+          #050507 92%
+        ),
+        linear-gradient(
+          to bottom,
+          rgba(5,5,7,.1),
+          #050507
+        );
       pointer-events: none;
+    }
+
+    /* cinematic light */
+    #hero::before {
+      content: "";
+      position: absolute;
+      width: 650px;
+      height: 650px;
+      left: 50%;
+      top: 45%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(
+          circle,
+          rgba(139,92,246,.11),
+          rgba(59,130,246,.045) 35%,
+          transparent 70%
+        );
+      filter: blur(20px);
+      z-index: 1;
+      pointer-events: none;
+      animation: heroGlow 7s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroGlow {
+      0% {
+        transform: translate(-50%, -50%) scale(.85);
+        opacity: .65;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(1.12);
+        opacity: 1;
+      }
     }
 
     .hero-content {
@@ -165,6 +295,10 @@
       font-size: .78rem;
       margin-bottom: 26px;
       animation: fadeUp .8s ease both;
+
+      box-shadow:
+        0 0 30px rgba(139,92,246,.08),
+        inset 0 0 20px rgba(139,92,246,.03);
     }
 
     .badge-dot {
@@ -172,7 +306,22 @@
       height: 7px;
       background: #a78bfa;
       border-radius: 50%;
-      box-shadow: 0 0 15px #8b5cf6;
+      box-shadow:
+        0 0 8px #8b5cf6,
+        0 0 20px #8b5cf6;
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% {
+        transform: scale(1);
+        opacity: .7;
+      }
+
+      50% {
+        transform: scale(1.6);
+        opacity: 1;
+      }
     }
 
     h1 {
@@ -182,6 +331,9 @@
       letter-spacing: -.075em;
       margin-bottom: 30px;
       animation: fadeUp .9s .1s ease both;
+
+      text-shadow:
+        0 0 80px rgba(139,92,246,.12);
     }
 
     .gradient-text {
@@ -190,11 +342,30 @@
         #fff,
         #c4b5fd,
         #60a5fa,
-        #22d3ee
+        #22d3ee,
+        #c4b5fd,
+        #fff
       );
+      background-size: 300% 100%;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+
+      animation: gradientFlow 7s ease infinite;
+    }
+
+    @keyframes gradientFlow {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
     }
 
     .hero-content p {
@@ -221,17 +392,42 @@
       font-size: .9rem;
       font-weight: 600;
       transition: .3s;
+      position: relative;
+      overflow: hidden;
     }
 
     .primary-btn {
       background: white;
       color: black;
-      box-shadow: 0 0 35px rgba(255,255,255,.12);
+      box-shadow:
+        0 0 35px rgba(255,255,255,.12);
+    }
+
+    .primary-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 80%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.8),
+        transparent
+      );
+      transform: skewX(-20deg);
+      transition: 0.7s;
+    }
+
+    .primary-btn:hover::before {
+      left: 140%;
     }
 
     .primary-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 45px rgba(139,92,246,.3);
+      box-shadow:
+        0 10px 45px rgba(139,92,246,.3);
     }
 
     .secondary-btn {
@@ -243,9 +439,11 @@
     .secondary-btn:hover {
       background: rgba(255,255,255,.1);
       transform: translateY(-3px);
+      box-shadow:
+        0 10px 35px rgba(34,211,238,.08);
     }
 
-    /* ---------------- GENERAL ---------------- */
+    /* ================= GENERAL ================= */
 
     section {
       position: relative;
@@ -264,6 +462,9 @@
       letter-spacing: .18em;
       font-weight: 700;
       margin-bottom: 15px;
+
+      text-shadow:
+        0 0 20px rgba(139,92,246,.35);
     }
 
     .section-heading h2 {
@@ -279,12 +480,20 @@
       line-height: 1.8;
     }
 
-    /* ---------------- FEATURES ---------------- */
+    /* ================= FEATURES ================= */
 
     #features {
       background:
-        radial-gradient(circle at 10% 20%, rgba(139,92,246,.08), transparent 30%),
-        radial-gradient(circle at 90% 70%, rgba(34,211,238,.06), transparent 30%);
+        radial-gradient(
+          circle at 10% 20%,
+          rgba(139,92,246,.08),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 70%,
+          rgba(34,211,238,.06),
+          transparent 30%
+        );
     }
 
     .feature-grid {
@@ -305,6 +514,30 @@
       transition: .4s;
     }
 
+    /* moving light across cards */
+    .feature-card::after {
+      content: "";
+      position: absolute;
+      top: -120%;
+      left: -100%;
+      width: 70%;
+      height: 300%;
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,.055),
+          transparent
+        );
+      transform: rotate(20deg);
+      transition: 0.8s ease;
+      pointer-events: none;
+    }
+
+    .feature-card:hover::after {
+      left: 130%;
+    }
+
     .feature-card::before {
       content: "";
       position: absolute;
@@ -315,11 +548,20 @@
       background: var(--purple);
       filter: blur(70px);
       opacity: .18;
+      transition: .5s;
+    }
+
+    .feature-card:hover::before {
+      transform: scale(1.4);
+      opacity: .28;
     }
 
     .feature-card:hover {
       transform: translateY(-8px);
       border-color: rgba(139,92,246,.35);
+      box-shadow:
+        0 25px 70px rgba(0,0,0,.25),
+        0 0 40px rgba(139,92,246,.06);
     }
 
     .feature-icon {
@@ -336,6 +578,18 @@
       border: 1px solid rgba(255,255,255,.1);
       font-size: 1.4rem;
       margin-bottom: 30px;
+
+      box-shadow:
+        inset 0 0 20px rgba(139,92,246,.06),
+        0 0 25px rgba(139,92,246,.04);
+
+      transition: .4s;
+    }
+
+    .feature-card:hover .feature-icon {
+      transform: translateY(-3px) rotate(4deg);
+      box-shadow:
+        0 0 35px rgba(139,92,246,.15);
     }
 
     .feature-card h3 {
@@ -350,7 +604,7 @@
       font-size: .9rem;
     }
 
-    /* ---------------- AI SECTION ---------------- */
+    /* ================= AI SECTION ================= */
 
     #ai {
       min-height: 700px;
@@ -389,6 +643,18 @@
         0 30px 100px rgba(0,0,0,.5),
         0 0 80px rgba(139,92,246,.08);
       overflow: hidden;
+
+      animation: terminalFloat 5s ease-in-out infinite;
+    }
+
+    @keyframes terminalFloat {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
     }
 
     .terminal-top {
@@ -405,9 +671,20 @@
       border-radius: 50%;
     }
 
-    .red { background: #ef4444; }
-    .yellow { background: #eab308; }
-    .green { background: #22c55e; }
+    .red {
+      background: #ef4444;
+      box-shadow: 0 0 10px rgba(239,68,68,.5);
+    }
+
+    .yellow {
+      background: #eab308;
+      box-shadow: 0 0 10px rgba(234,179,8,.4);
+    }
+
+    .green {
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34,197,94,.5);
+    }
 
     .terminal-body {
       padding: 30px;
@@ -429,7 +706,7 @@
       color: #666674;
     }
 
-    /* ---------------- PROJECTS ---------------- */
+    /* ================= PROJECTS ================= */
 
     #projects {
       background: #07070a;
@@ -448,14 +725,61 @@
       border-radius: 25px;
       overflow: hidden;
       background:
-        radial-gradient(circle at 70% 30%, rgba(139,92,246,.25), transparent 30%),
-        linear-gradient(145deg, #111118, #07070a);
+        radial-gradient(
+          circle at 70% 30%,
+          rgba(139,92,246,.25),
+          transparent 30%
+        ),
+        linear-gradient(
+          145deg,
+          #111118,
+          #07070a
+        );
       transition: .4s;
+    }
+
+    .project::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(
+          circle at 20% 80%,
+          rgba(34,211,238,.08),
+          transparent 30%
+        );
+      opacity: .7;
+      transition: .5s;
+    }
+
+    .project::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,.04),
+          transparent
+        );
+      transform: skewX(-20deg);
+      transition: .9s;
+    }
+
+    .project:hover::after {
+      left: 140%;
     }
 
     .project:hover {
       transform: translateY(-6px);
       border-color: rgba(255,255,255,.18);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.35),
+        0 0 50px rgba(139,92,246,.06);
     }
 
     .project-number {
@@ -464,12 +788,14 @@
       left: 25px;
       color: #777784;
       font-family: monospace;
+      z-index: 2;
     }
 
     .project-info {
       position: absolute;
       left: 30px;
       bottom: 30px;
+      z-index: 2;
     }
 
     .project-info span {
@@ -485,7 +811,7 @@
       margin-top: 7px;
     }
 
-    /* ---------------- CTA ---------------- */
+    /* ================= CTA ================= */
 
     #contact {
       text-align: center;
@@ -498,8 +824,16 @@
       border: 1px solid var(--line);
       border-radius: 35px;
       background:
-        radial-gradient(circle at 50% 0%, rgba(139,92,246,.16), transparent 45%),
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(139,92,246,.16),
+          transparent 45%
+        ),
         rgba(255,255,255,.025);
+
+      box-shadow:
+        0 30px 100px rgba(0,0,0,.25),
+        inset 0 0 80px rgba(139,92,246,.025);
     }
 
     .cta h2 {
@@ -526,13 +860,18 @@
       border-radius: 100px;
       font-weight: 700;
       transition: .3s;
+
+      box-shadow:
+        0 0 40px rgba(255,255,255,.08);
     }
 
     .cta-btn:hover {
       transform: scale(1.05);
+      box-shadow:
+        0 15px 50px rgba(139,92,246,.25);
     }
 
-    /* ---------------- FOOTER ---------------- */
+    /* ================= FOOTER ================= */
 
     footer {
       padding: 30px 6%;
@@ -544,20 +883,21 @@
       font-size: .8rem;
     }
 
-    /* ---------------- ANIMATIONS ---------------- */
+    /* ================= ANIMATIONS ================= */
 
     @keyframes fadeUp {
       from {
         opacity: 0;
         transform: translateY(25px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    /* ---------------- RESPONSIVE ---------------- */
+    /* ================= RESPONSIVE ================= */
 
     @media (max-width: 850px) {
       .nav-links {
@@ -607,10 +947,60 @@
         gap: 10px;
       }
     }
+
+    /* ================= CINEMATIC SCROLL REVEAL ================= */
+
+    .feature-card,
+    .project,
+    .ai-copy,
+    .ai-terminal,
+    .cta {
+      opacity: 0;
+      transform: translateY(35px);
+      transition:
+        opacity .9s ease,
+        transform .9s cubic-bezier(.16,1,.3,1);
+    }
+
+    .cinematic-visible {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+
+    /* ================= CUSTOM CURSOR LIGHT ================= */
+
+    .cursor-glow {
+      position: fixed;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9996;
+      background:
+        radial-gradient(
+          circle,
+          rgba(139,92,246,.07),
+          transparent 65%
+        );
+      transform: translate(-50%, -50%);
+      filter: blur(8px);
+      transition:
+        left .15s ease-out,
+        top .15s ease-out;
+    }
+
+    @media (max-width: 850px) {
+      .cursor-glow {
+        display: none;
+      }
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- CINEMATIC CURSOR LIGHT -->
+  <div class="cursor-glow"></div>
 
   <!-- NAVIGATION -->
   <nav>
@@ -625,7 +1015,6 @@
 
     <a href="#contact" class="nav-btn">Let's Build</a>
   </nav>
-
 
   <!-- HERO -->
   <section id="hero">
@@ -664,7 +1053,6 @@
     </div>
   </section>
 
-
   <!-- FEATURES -->
   <section id="features">
 
@@ -682,7 +1070,6 @@
       </p>
     </div>
 
-
     <div class="feature-grid">
 
       <div class="feature-card">
@@ -696,7 +1083,6 @@
         </p>
       </div>
 
-
       <div class="feature-card">
         <div class="feature-icon">◈</div>
 
@@ -707,7 +1093,6 @@
           immersive interfaces and real-time visualizations.
         </p>
       </div>
-
 
       <div class="feature-card">
         <div class="feature-icon">⌘</div>
@@ -720,7 +1105,6 @@
         </p>
       </div>
 
-
       <div class="feature-card">
         <div class="feature-icon">∞</div>
 
@@ -732,7 +1116,6 @@
         </p>
       </div>
 
-
       <div class="feature-card">
         <div class="feature-icon">⚡</div>
 
@@ -743,7 +1126,6 @@
           smooth and responsive across devices.
         </p>
       </div>
-
 
       <div class="feature-card">
         <div class="feature-icon">◎</div>
@@ -758,7 +1140,6 @@
 
     </div>
   </section>
-
 
   <!-- AI -->
   <section id="ai">
@@ -781,7 +1162,6 @@
         </p>
 
       </div>
-
 
       <div class="ai-terminal">
 
@@ -840,7 +1220,6 @@
     </div>
   </section>
 
-
   <!-- PROJECTS -->
   <section id="projects">
 
@@ -858,7 +1237,6 @@
       </p>
     </div>
 
-
     <div class="project-grid">
 
       <div class="project">
@@ -870,7 +1248,6 @@
         </div>
       </div>
 
-
       <div class="project">
         <div class="project-number">02</div>
 
@@ -880,7 +1257,6 @@
         </div>
       </div>
 
-
       <div class="project">
         <div class="project-number">03</div>
 
@@ -889,7 +1265,6 @@
           <h3>Autonomous Flow</h3>
         </div>
       </div>
-
 
       <div class="project">
         <div class="project-number">04</div>
@@ -903,7 +1278,6 @@
     </div>
 
   </section>
-
 
   <!-- CONTACT -->
   <section id="contact">
@@ -934,13 +1308,11 @@
 
   </section>
 
-
   <!-- FOOTER -->
   <footer>
     <div>© 2026 Het Codes. All rights reserved.</div>
     <div>AI × 3D × Code</div>
   </footer>
-
 
   <!-- THREE.JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -960,7 +1332,6 @@
 
     camera.position.z = 8;
 
-
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true
@@ -977,10 +1348,9 @@
 
     container.appendChild(renderer.domElement);
 
+    /* ================= PARTICLES ================= */
 
-    /* ---------------- PARTICLES ---------------- */
-
-    const particleCount = 2200;
+    const particleCount = 3000;
 
     const positions = new Float32Array(
       particleCount * 3
@@ -988,7 +1358,7 @@
 
     for (let i = 0; i < particleCount; i++) {
 
-      const radius = 4 + Math.random() * 8;
+      const radius = 4 + Math.random() * 9;
 
       const theta =
         Math.random() * Math.PI * 2;
@@ -1011,9 +1381,7 @@
       positions[i * 3 + 2] =
         radius *
         Math.cos(phi);
-
     }
-
 
     const particleGeometry =
       new THREE.BufferGeometry();
@@ -1026,7 +1394,6 @@
       )
     );
 
-
     const particleMaterial =
       new THREE.PointsMaterial({
         color: 0x8b5cf6,
@@ -1036,7 +1403,6 @@
         blending: THREE.AdditiveBlending
       });
 
-
     const particles =
       new THREE.Points(
         particleGeometry,
@@ -1045,15 +1411,13 @@
 
     scene.add(particles);
 
-
-    /* ---------------- CENTRAL 3D OBJECT ---------------- */
+    /* ================= CENTRAL 3D OBJECT ================= */
 
     const geometry =
       new THREE.IcosahedronGeometry(
         1.8,
         2
       );
-
 
     const material =
       new THREE.MeshBasicMaterial({
@@ -1063,7 +1427,6 @@
         opacity: 0.35
       });
 
-
     const sphere =
       new THREE.Mesh(
         geometry,
@@ -1072,8 +1435,7 @@
 
     scene.add(sphere);
 
-
-    /* Inner glowing sphere */
+    /* ================= INNER GLOWING SPHERE ================= */
 
     const innerGeometry =
       new THREE.SphereGeometry(
@@ -1082,14 +1444,12 @@
         32
       );
 
-
     const innerMaterial =
       new THREE.MeshBasicMaterial({
         color: 0x3b82f6,
         transparent: true,
         opacity: 0.035
       });
-
 
     const innerSphere =
       new THREE.Mesh(
@@ -1099,8 +1459,120 @@
 
     scene.add(innerSphere);
 
+    /* ================= CINEMATIC RINGS ================= */
 
-    /* ---------------- MOUSE ---------------- */
+    const ringMaterial =
+      new THREE.MeshBasicMaterial({
+        color: 0x22d3ee,
+        transparent: true,
+        opacity: 0.18,
+        wireframe: true
+      });
+
+    const ring1 =
+      new THREE.Mesh(
+        new THREE.TorusGeometry(
+          2.5,
+          0.018,
+          8,
+          120
+        ),
+        ringMaterial
+      );
+
+    ring1.rotation.x = Math.PI / 2.5;
+    scene.add(ring1);
+
+    const ring2 =
+      new THREE.Mesh(
+        new THREE.TorusGeometry(
+          3.0,
+          0.012,
+          8,
+          120
+        ),
+        new THREE.MeshBasicMaterial({
+          color: 0x8b5cf6,
+          transparent: true,
+          opacity: 0.14,
+          wireframe: true
+        })
+      );
+
+    ring2.rotation.y = Math.PI / 3;
+    scene.add(ring2);
+
+    const ring3 =
+      new THREE.Mesh(
+        new THREE.TorusGeometry(
+          3.5,
+          0.009,
+          8,
+          120
+        ),
+        new THREE.MeshBasicMaterial({
+          color: 0x3b82f6,
+          transparent: true,
+          opacity: 0.10,
+          wireframe: true
+        })
+      );
+
+    ring3.rotation.x = Math.PI / 4;
+    ring3.rotation.z = Math.PI / 5;
+
+    scene.add(ring3);
+
+    /* ================= EXTRA FLOATING PARTICLES ================= */
+
+    const tinyCount = 450;
+
+    const tinyPositions =
+      new Float32Array(
+        tinyCount * 3
+      );
+
+    for (let i = 0; i < tinyCount; i++) {
+
+      tinyPositions[i * 3] =
+        (Math.random() - 0.5) * 20;
+
+      tinyPositions[i * 3 + 1] =
+        (Math.random() - 0.5) * 12;
+
+      tinyPositions[i * 3 + 2] =
+        (Math.random() - 0.5) * 12;
+    }
+
+    const tinyGeometry =
+      new THREE.BufferGeometry();
+
+    tinyGeometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(
+        tinyPositions,
+        3
+      )
+    );
+
+    const tinyMaterial =
+      new THREE.PointsMaterial({
+        color: 0x22d3ee,
+        size: 0.012,
+        transparent: true,
+        opacity: 0.45,
+        blending: THREE.AdditiveBlending
+      });
+
+    const tinyParticles =
+      new THREE.Points(
+        tinyGeometry,
+        tinyMaterial
+      );
+
+    scene.add(tinyParticles);
+
+    /* ================= MOUSE ================= */
 
     let mouseX = 0;
     let mouseY = 0;
@@ -1122,12 +1594,30 @@
       }
     );
 
+    /* ================= CINEMATIC CURSOR ================= */
 
-    /* ---------------- ANIMATION ---------------- */
+    const cursorGlow =
+      document.querySelector(
+        ".cursor-glow"
+      );
+
+    document.addEventListener(
+      "mousemove",
+      (event) => {
+
+        cursorGlow.style.left =
+          event.clientX + "px";
+
+        cursorGlow.style.top =
+          event.clientY + "px";
+
+      }
+    );
+
+    /* ================= ANIMATION ================= */
 
     const clock =
       new THREE.Clock();
-
 
     function animate() {
 
@@ -1136,6 +1626,7 @@
       const time =
         clock.getElapsedTime();
 
+      /* particles */
 
       particles.rotation.y =
         time * 0.015;
@@ -1143,6 +1634,10 @@
       particles.rotation.x =
         time * 0.006;
 
+      particles.rotation.z =
+        Math.sin(time * 0.15) * 0.03;
+
+      /* central object */
 
       sphere.rotation.x =
         time * 0.12;
@@ -1150,10 +1645,61 @@
       sphere.rotation.y =
         time * 0.18;
 
+      /* subtle breathing */
+
+      const pulse =
+        1 +
+        Math.sin(time * 1.4) * 0.035;
+
+      sphere.scale.set(
+        pulse,
+        pulse,
+        pulse
+      );
+
+      /* inner sphere */
 
       innerSphere.rotation.y =
         -time * 0.1;
 
+      innerSphere.rotation.x =
+        time * 0.04;
+
+      innerSphere.scale.set(
+        pulse,
+        pulse,
+        pulse
+      );
+
+      /* cinematic rings */
+
+      ring1.rotation.z =
+        time * 0.16;
+
+      ring1.rotation.y =
+        time * 0.08;
+
+      ring2.rotation.x =
+        time * 0.12;
+
+      ring2.rotation.z =
+        -time * 0.10;
+
+      ring3.rotation.y =
+        -time * 0.07;
+
+      ring3.rotation.x =
+        time * 0.05;
+
+      /* tiny particles */
+
+      tinyParticles.rotation.y =
+        time * 0.008;
+
+      tinyParticles.rotation.x =
+        Math.sin(time * 0.1) * 0.05;
+
+      /* mouse cinematic camera movement */
 
       camera.position.x +=
         ((mouseX * 0.4) -
@@ -1163,8 +1709,13 @@
         ((-mouseY * 0.3) -
           camera.position.y) * 0.025;
 
-      camera.lookAt(0, 0, 0);
+      /* slow cinematic camera breathing */
 
+      camera.position.z =
+        8 +
+        Math.sin(time * 0.25) * 0.08;
+
+      camera.lookAt(0, 0, 0);
 
       renderer.render(
         scene,
@@ -1175,8 +1726,7 @@
 
     animate();
 
-
-    /* ---------------- RESIZE ---------------- */
+    /* ================= RESIZE ================= */
 
     window.addEventListener(
       "resize",
@@ -1193,6 +1743,47 @@
           window.innerHeight
         );
 
+      }
+    );
+
+    /* ================= SCROLL REVEAL ================= */
+
+    const cinematicElements =
+      document.querySelectorAll(
+        ".feature-card, .project, .ai-copy, .ai-terminal, .cta"
+      );
+
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+
+          entries.forEach(
+            (entry) => {
+
+              if (entry.isIntersecting) {
+
+                entry.target.classList.add(
+                  "cinematic-visible"
+                );
+
+                observer.unobserve(
+                  entry.target
+                );
+
+              }
+
+            }
+          );
+
+        },
+        {
+          threshold: 0.12
+        }
+      );
+
+    cinematicElements.forEach(
+      (element) => {
+        observer.observe(element);
       }
     );
 
