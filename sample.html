@@ -1,1746 +1,1202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Het Codes | Digital Studio</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <style>
-
-        /* =========================
-           BASIC RESET
-        ========================= */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: "Inter", sans-serif;
-            background: #050507;
-            color: white;
-            overflow-x: hidden;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-
-        /* =========================
-           LOADER
-        ========================= */
-
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: #050507;
-            z-index: 9999;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-
-            transition: 0.8s ease;
-        }
-
-        .loader-logo {
-            font-size: 38px;
-            font-weight: 800;
-            letter-spacing: -3px;
-        }
-
-        .loader-logo span {
-            color: #8d70ff;
-        }
-
-        .loader-line {
-            width: 150px;
-            height: 2px;
-            background: #222;
-            margin-top: 25px;
-            overflow: hidden;
-        }
-
-        .loader-line span {
-            display: block;
-            width: 0;
-            height: 100%;
-            background: white;
-            animation: loading 1.5s forwards;
-        }
-
-        @keyframes loading {
-            to {
-                width: 100%;
-            }
-        }
-
-
-        /* =========================
-           NAVBAR
-        ========================= */
-
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 80px;
-
-            padding: 0 6%;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            z-index: 100;
-
-            background: linear-gradient(
-                rgba(5,5,7,0.9),
-                transparent
-            );
-
-            backdrop-filter: blur(8px);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            font-weight: 700;
-            font-size: 17px;
-        }
-
-        .logo-box {
-            width: 36px;
-            height: 36px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            border-radius: 10px;
-
-            border: 1px solid #ffffff25;
-
-            background: #ffffff08;
-
-            font-weight: 800;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 35px;
-
-            font-size: 13px;
-            color: #aaa;
-        }
-
-        .nav-links a {
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: white;
-        }
-
-        .nav-button {
-            padding: 11px 18px;
-
-            border-radius: 50px;
-
-            border: 1px solid #ffffff25;
-
-            background: #ffffff08;
-
-            font-size: 13px;
-        }
-
-
-        /* =========================
-           HERO
-        ========================= */
-
-        .hero {
-            height: 100vh;
-            min-height: 700px;
-
-            position: relative;
-
-            display: flex;
-            align-items: center;
-
-            padding: 100px 8%;
-
-            overflow: hidden;
-        }
-
-        #three-container {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-
-            background:
-                radial-gradient(
-                    circle at 70% 50%,
-                    transparent,
-                    #050507 65%
-                );
-
-            z-index: 1;
-
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-
-            max-width: 850px;
-        }
-
-        .tag {
-            color: #96969e;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 3px;
-
-            margin-bottom: 25px;
-        }
-
-        .tag span {
-            color: #9b7cff;
-        }
-
-        .hero h1 {
-            font-size: clamp(65px, 10vw, 145px);
-
-            line-height: 0.87;
-
-            letter-spacing: -8px;
-
-            font-weight: 800;
-        }
-
-        .gradient-text {
-            background: linear-gradient(
-                110deg,
-                #ffffff,
-                #9476ff,
-                #c0b2ff
-            );
-
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-
-        .hero-description {
-            max-width: 520px;
-
-            color: #9999a3;
-
-            line-height: 1.7;
-
-            font-size: 16px;
-
-            margin-top: 35px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 12px;
-
-            margin-top: 35px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 20px;
-
-            padding: 15px 22px;
-
-            border-radius: 50px;
-
-            font-size: 13px;
-            font-weight: 600;
-
-            transition: 0.3s;
-        }
-
-        .btn-primary {
-            background: white;
-            color: black;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-        }
-
-        .btn-secondary {
-            border: 1px solid #ffffff25;
-            background: #ffffff08;
-        }
-
-        .btn-secondary:hover {
-            background: #ffffff15;
-        }
-
-        .scroll-text {
-            position: absolute;
-
-            bottom: 30px;
-            right: 6%;
-
-            font-size: 9px;
-
-            color: #666;
-
-            letter-spacing: 3px;
-        }
-
-
-        /* =========================
-           SECTIONS
-        ========================= */
-
-        section:not(.hero) {
-            padding: 140px 8%;
-        }
-
-        .section-label {
-            color: #777;
-
-            font-size: 11px;
-
-            letter-spacing: 3px;
-
-            font-weight: 700;
-
-            margin-bottom: 22px;
-        }
-
-        .section-title {
-            font-size: clamp(45px, 6vw, 80px);
-
-            line-height: 1;
-
-            letter-spacing: -5px;
-
-            font-weight: 800;
-        }
-
-
-        /* =========================
-           PROJECTS
-        ========================= */
-
-        .projects {
-            background: #07070a;
-        }
-
-        .project-grid {
-            margin-top: 70px;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 20px;
-        }
-
-        .project {
-            border-radius: 22px;
-
-            overflow: hidden;
-
-            background: #0c0c10;
-
-            border: 1px solid #ffffff10;
-
-            transition: 0.5s;
-        }
-
-        .project:hover {
-            transform: translateY(-10px);
-
-            border-color: #ffffff35;
-        }
-
-        .project-image {
-            height: 350px;
-
-            position: relative;
-
-            overflow: hidden;
-        }
-
-        .project-number {
-            position: absolute;
-
-            top: 20px;
-            left: 20px;
-
-            font-size: 11px;
-
-            color: #ffffff88;
-        }
-
-
-        /* PROJECT 1 */
-
-        .project-one {
-            background:
-                radial-gradient(
-                    circle at center,
-                    #6f4cff55,
-                    transparent 35%
-                ),
-                linear-gradient(
-                    135deg,
-                    #0c0916,
-                    #181127
-                );
-        }
-
-        .project-one .sphere {
-            position: absolute;
-
-            width: 150px;
-            height: 150px;
-
-            left: 50%;
-            top: 50%;
-
-            transform: translate(-50%, -50%);
-
-            border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle at 30% 25%,
-                    white,
-                    #9274ff 15%,
-                    #351b7b 55%,
-                    #08050f
-                );
-
-            box-shadow:
-                0 0 100px #704cff80;
-        }
-
-
-        /* PROJECT 2 */
-
-        .project-two {
-            background:
-                radial-gradient(
-                    circle,
-                    #24243a,
-                    #08080b
-                );
-        }
-
-        .cube {
-            position: absolute;
-
-            width: 140px;
-            height: 140px;
-
-            left: 50%;
-            top: 50%;
-
-            transform:
-                translate(-50%, -50%)
-                rotate(30deg)
-                skewY(-8deg);
-
-            background:
-                linear-gradient(
-                    135deg,
-                    white,
-                    #555,
-                    #111
-                );
-
-            box-shadow:
-                40px 40px 70px black;
-        }
-
-
-        /* PROJECT 3 */
-
-        .project-three {
-            background:
-                radial-gradient(
-                    circle at center,
-                    #15515a,
-                    #061013
-                );
-        }
-
-        .project-three .sphere {
-            position: absolute;
-
-            width: 170px;
-            height: 170px;
-
-            left: 50%;
-            top: 50%;
-
-            transform: translate(-50%, -50%);
-
-            border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle at 30% 25%,
-                    #dfffff,
-                    #3dc6cd 18%,
-                    #06434b 60%,
-                    #020708
-                );
-
-            box-shadow:
-                0 0 100px #1ac8d855;
-        }
-
-        .project-info {
-            padding: 22px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-        }
-
-        .project-info h3 {
-            font-size: 17px;
-        }
-
-        .project-info p {
-            color: #777;
-
-            font-size: 12px;
-
-            margin-top: 7px;
-        }
-
-        .arrow {
-            font-size: 22px;
-        }
-
-
-        /* =========================
-           SERVICES
-        ========================= */
-
-        .service-grid {
-            margin-top: 70px;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-        }
-
-        .service {
-            padding: 40px 40px 45px 0;
-
-            border-top: 1px solid #ffffff15;
-        }
-
-        .service-number {
-            color: #777;
-
-            font-size: 11px;
-        }
-
-        .service h3 {
-            font-size: 27px;
-
-            margin-top: 25px;
-
-            letter-spacing: -1px;
-        }
-
-        .service p {
-            max-width: 480px;
-
-            color: #888;
-
-            line-height: 1.7;
-
-            font-size: 14px;
-
-            margin-top: 12px;
-        }
-
-
-        /* =========================
-           ABOUT
-        ========================= */
-
-        .about {
-            background: #08080b;
-
-            display: grid;
-
-            grid-template-columns:
-                1.5fr 0.5fr;
-
-            gap: 100px;
-        }
-
-        .about-text {
-            max-width: 700px;
-        }
-
-        .about-description {
-            margin-top: 35px;
-
-            color: #888;
-
-            line-height: 1.8;
-
-            font-size: 15px;
-        }
-
-        .about-box {
-            min-height: 330px;
-
-            border-radius: 30px;
-
-            border: 1px solid #ffffff12;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            flex-direction: column;
-
-            background:
-                radial-gradient(
-                    circle,
-                    #ffffff0b,
-                    transparent 65%
-                );
-        }
-
-        .about-logo {
-            font-size: 110px;
-
-            font-weight: 800;
-
-            letter-spacing: -10px;
-        }
-
-        .about-small {
-            color: #666;
-
-            font-size: 9px;
-
-            letter-spacing: 3px;
-
-            margin-top: 10px;
-        }
-
-
-        /* =========================
-           CONTACT
-        ========================= */
-
-        .contact {
-            min-height: 80vh;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            text-align: center;
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    #3c287d30,
-                    transparent 45%
-                );
-        }
-
-        .contact h2 {
-            font-size: clamp(50px, 7vw, 100px);
-
-            line-height: 0.95;
-
-            letter-spacing: -6px;
-        }
-
-        .contact h2 span {
-            color: #888;
-        }
-
-        .email {
-            display: inline-flex;
-
-            margin-top: 50px;
-
-            padding-bottom: 8px;
-
-            border-bottom: 1px solid white;
-
-            gap: 30px;
-
-            font-size: 15px;
-        }
-
-        .email span {
-            color: #9478ff;
-        }
-
-
-        /* =========================
-           FOOTER
-        ========================= */
-
-        footer {
-            padding: 30px 8%;
-
-            border-top: 1px solid #ffffff10;
-
-            color: #666;
-
-            font-size: 10px;
-
-            letter-spacing: 1px;
-
-            display: flex;
-
-            justify-content: space-between;
-        }
-
-
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media(max-width: 800px) {
-
-            nav {
-                padding: 0 5%;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .nav-button {
-                padding: 9px 14px;
-            }
-
-            .hero {
-                padding: 100px 7%;
-            }
-
-            .hero h1 {
-                font-size: 65px;
-
-                letter-spacing: -4px;
-            }
-
-            .hero-description {
-                font-size: 14px;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-
-                align-items: flex-start;
-            }
-
-            section:not(.hero) {
-                padding: 100px 7%;
-            }
-
-            .project-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .service-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .about {
-                grid-template-columns: 1fr;
-
-                gap: 50px;
-            }
-
-            .section-title {
-                letter-spacing: -3px;
-            }
-
-            .contact h2 {
-                letter-spacing: -3px;
-            }
-
-            footer {
-                flex-direction: column;
-
-                gap: 10px;
-            }
-        }
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Het Codes — AI & 3D Innovation</title>
+  <meta
+    name="description"
+    content="Het Codes — Building futuristic AI-powered digital experiences with 3D technology."
+  />
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #050507;
+      --bg-soft: #0b0b10;
+      --text: #f5f5f7;
+      --muted: #9696a3;
+      --line: rgba(255, 255, 255, 0.09);
+      --purple: #8b5cf6;
+      --blue: #3b82f6;
+      --cyan: #22d3ee;
+      --pink: #ec4899;
+      --card: rgba(255, 255, 255, 0.045);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* ---------------- NAVBAR ---------------- */
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 22px 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(18px);
+      background: rgba(5, 5, 7, 0.55);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .logo {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .logo span {
+      color: var(--purple);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      color: #b7b7c2;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .nav-btn {
+      padding: 11px 19px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.06);
+      color: white;
+      cursor: pointer;
+      transition: .3s;
+    }
+
+    .nav-btn:hover {
+      background: white;
+      color: black;
+      transform: translateY(-2px);
+    }
+
+    /* ---------------- HERO ---------------- */
+
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #three-container {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(circle at center, transparent 0%, rgba(5,5,7,.3) 40%, #050507 90%),
+        linear-gradient(to bottom, rgba(5,5,7,.1), #050507);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 950px;
+      padding: 120px 20px 60px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 100px;
+      border: 1px solid rgba(139,92,246,.35);
+      background: rgba(139,92,246,.08);
+      color: #c4b5fd;
+      font-size: .78rem;
+      margin-bottom: 26px;
+      animation: fadeUp .8s ease both;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      background: #a78bfa;
+      border-radius: 50%;
+      box-shadow: 0 0 15px #8b5cf6;
+    }
+
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      line-height: .9;
+      letter-spacing: -.075em;
+      margin-bottom: 30px;
+      animation: fadeUp .9s .1s ease both;
+    }
+
+    .gradient-text {
+      background: linear-gradient(
+        90deg,
+        #fff,
+        #c4b5fd,
+        #60a5fa,
+        #22d3ee
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-content p {
+      max-width: 650px;
+      margin: auto;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.8;
+      animation: fadeUp .9s .2s ease both;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 36px;
+      animation: fadeUp .9s .3s ease both;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      padding: 15px 25px;
+      border-radius: 100px;
+      font-size: .9rem;
+      font-weight: 600;
+      transition: .3s;
+    }
+
+    .primary-btn {
+      background: white;
+      color: black;
+      box-shadow: 0 0 35px rgba(255,255,255,.12);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 45px rgba(139,92,246,.3);
+    }
+
+    .secondary-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: white;
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255,255,255,.1);
+      transform: translateY(-3px);
+    }
+
+    /* ---------------- GENERAL ---------------- */
+
+    section {
+      position: relative;
+      padding: 120px 6%;
+    }
+
+    .section-heading {
+      max-width: 700px;
+      margin-bottom: 55px;
+    }
+
+    .eyebrow {
+      color: #a78bfa;
+      text-transform: uppercase;
+      font-size: .72rem;
+      letter-spacing: .18em;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .section-heading h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.3rem, 5vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: -.055em;
+      margin-bottom: 20px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ---------------- FEATURES ---------------- */
+
+    #features {
+      background:
+        radial-gradient(circle at 10% 20%, rgba(139,92,246,.08), transparent 30%),
+        radial-gradient(circle at 90% 70%, rgba(34,211,238,.06), transparent 30%);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature-card {
+      position: relative;
+      padding: 35px;
+      min-height: 280px;
+      border: 1px solid var(--line);
+      border-radius: 25px;
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      transition: .4s;
+    }
+
+    .feature-card::before {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      top: -80px;
+      right: -80px;
+      background: var(--purple);
+      filter: blur(70px);
+      opacity: .18;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(139,92,246,.35);
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: linear-gradient(
+        135deg,
+        rgba(139,92,246,.2),
+        rgba(59,130,246,.15)
+      );
+      border: 1px solid rgba(255,255,255,.1);
+      font-size: 1.4rem;
+      margin-bottom: 30px;
+    }
+
+    .feature-card h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 13px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: .9rem;
+    }
+
+    /* ---------------- AI SECTION ---------------- */
+
+    #ai {
+      min-height: 700px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .ai-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .ai-copy h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.7rem, 5vw, 5rem);
+      letter-spacing: -.06em;
+      line-height: 1;
+      margin-bottom: 25px;
+    }
+
+    .ai-copy p {
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 550px;
+    }
+
+    .ai-terminal {
+      border: 1px solid var(--line);
+      border-radius: 25px;
+      background: rgba(10,10,15,.85);
+      box-shadow:
+        0 30px 100px rgba(0,0,0,.5),
+        0 0 80px rgba(139,92,246,.08);
+      overflow: hidden;
+    }
+
+    .terminal-top {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .terminal-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+
+    .red { background: #ef4444; }
+    .yellow { background: #eab308; }
+    .green { background: #22c55e; }
+
+    .terminal-body {
+      padding: 30px;
+      font-family: monospace;
+      font-size: .85rem;
+      line-height: 2;
+      color: #a7f3d0;
+    }
+
+    .terminal-body .purple {
+      color: #c4b5fd;
+    }
+
+    .terminal-body .blue {
+      color: #7dd3fc;
+    }
+
+    .terminal-body .muted {
+      color: #666674;
+    }
+
+    /* ---------------- PROJECTS ---------------- */
+
+    #projects {
+      background: #07070a;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .project {
+      position: relative;
+      min-height: 400px;
+      border: 1px solid var(--line);
+      border-radius: 25px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 70% 30%, rgba(139,92,246,.25), transparent 30%),
+        linear-gradient(145deg, #111118, #07070a);
+      transition: .4s;
+    }
+
+    .project:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .project-number {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      color: #777784;
+      font-family: monospace;
+    }
+
+    .project-info {
+      position: absolute;
+      left: 30px;
+      bottom: 30px;
+    }
+
+    .project-info span {
+      color: #a78bfa;
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+    }
+
+    .project-info h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 2rem;
+      margin-top: 7px;
+    }
+
+    /* ---------------- CTA ---------------- */
+
+    #contact {
+      text-align: center;
+    }
+
+    .cta {
+      max-width: 1000px;
+      margin: auto;
+      padding: 90px 30px;
+      border: 1px solid var(--line);
+      border-radius: 35px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(139,92,246,.16), transparent 45%),
+        rgba(255,255,255,.025);
+    }
+
+    .cta h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.7rem, 6vw, 5.5rem);
+      letter-spacing: -.065em;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 550px;
+      margin: auto;
+      line-height: 1.7;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 16px 28px;
+      background: white;
+      color: black;
+      border-radius: 100px;
+      font-weight: 700;
+      transition: .3s;
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* ---------------- FOOTER ---------------- */
+
+    footer {
+      padding: 30px 6%;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #666672;
+      font-size: .8rem;
+    }
+
+    /* ---------------- ANIMATIONS ---------------- */
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---------------- RESPONSIVE ---------------- */
+
+    @media (max-width: 850px) {
+      .nav-links {
+        display: none;
+      }
+
+      .feature-grid,
+      .project-grid,
+      .ai-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .ai-layout {
+        gap: 45px;
+      }
+
+      section {
+        padding: 90px 5%;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        width: 220px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 3.6rem;
+      }
+
+      .feature-card {
+        padding: 27px;
+      }
+
+      .project {
+        min-height: 300px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
+  <!-- NAVIGATION -->
+  <nav>
+    <a href="#hero" class="logo">Het<span>Codes</span>.</a>
 
-<!-- =========================
-     LOADER
-========================= -->
+    <ul class="nav-links">
+      <li><a href="#features">Capabilities</a></li>
+      <li><a href="#ai">AI</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
 
-<div id="loader">
-
-    <div class="loader-logo">
-        H<span>·</span>C
-    </div>
-
-    <div class="loader-line">
-        <span></span>
-    </div>
-
-</div>
+    <a href="#contact" class="nav-btn">Let's Build</a>
+  </nav>
 
 
-<!-- =========================
-     NAVBAR
-========================= -->
-
-<nav>
-
-    <a href="#home" class="logo">
-
-        <div class="logo-box">
-            H
-        </div>
-
-        Het Codes
-
-    </a>
-
-
-    <div class="nav-links">
-
-        <a href="#work">
-            Work
-        </a>
-
-        <a href="#services">
-            Services
-        </a>
-
-        <a href="#about">
-            About
-        </a>
-
-    </div>
-
-
-    <a href="#contact" class="nav-button">
-        Let's Talk ↗
-    </a>
-
-</nav>
-
-
-
-<!-- =========================
-     HERO
-========================= -->
-
-<section class="hero" id="home">
+  <!-- HERO -->
+  <section id="hero">
 
     <div id="three-container"></div>
-
     <div class="hero-overlay"></div>
-
 
     <div class="hero-content">
 
-        <div class="tag">
-            <span>●</span>
-            DIGITAL CREATIVE STUDIO
-        </div>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Building the future with AI
+      </div>
+
+      <h1>
+        Code the
+        <span class="gradient-text">Future.</span>
+      </h1>
+
+      <p>
+        Het Codes creates intelligent digital experiences where
+        artificial intelligence, 3D technology and modern software
+        come together.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#projects" class="primary-btn">
+          Explore Projects →
+        </a>
+
+        <a href="#contact" class="secondary-btn">
+          Start a Project
+        </a>
+      </div>
+
+    </div>
+  </section>
 
 
-        <h1>
+  <!-- FEATURES -->
+  <section id="features">
 
-            We build
+    <div class="section-heading">
+      <div class="eyebrow">Capabilities</div>
 
-            <br>
+      <h2>
+        Technology without
+        the boring parts.
+      </h2>
 
-            <span class="gradient-text">
-                digital worlds.
-            </span>
+      <p>
+        We combine engineering, artificial intelligence and immersive
+        interfaces to create products that feel years ahead.
+      </p>
+    </div>
 
-        </h1>
+
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">✦</div>
+
+        <h3>Artificial Intelligence</h3>
+
+        <p>
+          AI-powered applications, intelligent automation,
+          AI agents and custom machine-learning experiences.
+        </p>
+      </div>
 
 
-        <p class="hero-description">
+      <div class="feature-card">
+        <div class="feature-icon">◈</div>
 
-            Websites, applications and digital experiences
-            engineered with clean code, modern design
-            and a little bit of magic.
+        <h3>3D Experiences</h3>
 
+        <p>
+          Interactive 3D websites, WebGL experiences,
+          immersive interfaces and real-time visualizations.
+        </p>
+      </div>
+
+
+      <div class="feature-card">
+        <div class="feature-icon">⌘</div>
+
+        <h3>Modern Development</h3>
+
+        <p>
+          Fast, responsive and scalable digital products
+          built with modern web technologies.
+        </p>
+      </div>
+
+
+      <div class="feature-card">
+        <div class="feature-icon">∞</div>
+
+        <h3>Automation</h3>
+
+        <p>
+          Turn repetitive workflows into intelligent systems
+          that work continuously in the background.
+        </p>
+      </div>
+
+
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+
+        <h3>Performance</h3>
+
+        <p>
+          Optimized experiences designed to stay fast,
+          smooth and responsive across devices.
+        </p>
+      </div>
+
+
+      <div class="feature-card">
+        <div class="feature-icon">◎</div>
+
+        <h3>Creative Technology</h3>
+
+        <p>
+          Technology with personality — combining design,
+          interaction and engineering into memorable products.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- AI -->
+  <section id="ai">
+
+    <div class="ai-layout">
+
+      <div class="ai-copy">
+
+        <div class="eyebrow">AI Systems</div>
+
+        <h2>
+          Intelligence
+          built into the experience.
+        </h2>
+
+        <p>
+          From AI assistants to autonomous workflows, Het Codes
+          turns large language models into useful products that
+          actually solve problems.
         </p>
 
-
-        <div class="hero-buttons">
-
-            <a href="#work" class="btn btn-primary">
-
-                Explore Work
-
-                <span>↓</span>
-
-            </a>
+      </div>
 
 
-            <a href="#contact" class="btn btn-secondary">
+      <div class="ai-terminal">
 
-                Start a Project
-
-                <span>↗</span>
-
-            </a>
-
+        <div class="terminal-top">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
         </div>
 
+        <div class="terminal-body">
+
+          <div>
+            <span class="purple">const</span>
+            hetCodes =
+            <span class="blue">new AI()</span>;
+          </div>
+
+          <br>
+
+          <div class="muted">
+            // Initializing intelligence...
+          </div>
+
+          <div>
+            hetCodes.<span class="purple">think</span>();
+          </div>
+
+          <div>
+            hetCodes.<span class="purple">learn</span>();
+          </div>
+
+          <div>
+            hetCodes.<span class="purple">create</span>();
+          </div>
+
+          <br>
+
+          <div>
+            <span class="blue">✓</span>
+            System ready.
+          </div>
+
+          <div>
+            <span class="blue">✓</span>
+            AI connected.
+          </div>
+
+          <div>
+            <span class="blue">✓</span>
+            Future online.
+          </div>
+
+        </div>
+      </div>
+
     </div>
+  </section>
 
 
-    <div class="scroll-text">
+  <!-- PROJECTS -->
+  <section id="projects">
 
-        SCROLL TO EXPLORE ↓
+    <div class="section-heading">
+      <div class="eyebrow">Selected Work</div>
 
+      <h2>
+        Ideas turned
+        into reality.
+      </h2>
+
+      <p>
+        A glimpse into the kind of digital products and experiences
+        Het Codes can create.
+      </p>
     </div>
-
-</section>
-
-
-
-<!-- =========================
-     WORK
-========================= -->
-
-<section class="projects" id="work">
-
-    <div class="section-label">
-        SELECTED WORK
-    </div>
-
-
-    <h2 class="section-title">
-
-        Ideas into
-        <span class="gradient-text">
-            interfaces.
-        </span>
-
-    </h2>
 
 
     <div class="project-grid">
 
+      <div class="project">
+        <div class="project-number">01</div>
 
-        <!-- PROJECT 1 -->
-
-        <div class="project">
-
-            <div class="project-image project-one">
-
-                <span class="project-number">
-                    01
-                </span>
-
-                <div class="sphere"></div>
-
-            </div>
-
-
-            <div class="project-info">
-
-                <div>
-
-                    <h3>
-                        IPO Insight
-                    </h3>
-
-                    <p>
-                        Investment Analysis Platform
-                    </p>
-
-                </div>
-
-                <div class="arrow">
-                    ↗
-                </div>
-
-            </div>
-
+        <div class="project-info">
+          <span>AI Platform</span>
+          <h3>Neural Workspace</h3>
         </div>
+      </div>
 
 
+      <div class="project">
+        <div class="project-number">02</div>
 
-        <!-- PROJECT 2 -->
-
-        <div class="project">
-
-            <div class="project-image project-two">
-
-                <span class="project-number">
-                    02
-                </span>
-
-                <div class="cube"></div>
-
-            </div>
-
-
-            <div class="project-info">
-
-                <div>
-
-                    <h3>
-                        Smart Clinic
-                    </h3>
-
-                    <p>
-                        Healthcare Application
-                    </p>
-
-                </div>
-
-                <div class="arrow">
-                    ↗
-                </div>
-
-            </div>
-
+        <div class="project-info">
+          <span>3D Web</span>
+          <h3>Digital Universe</h3>
         </div>
+      </div>
 
 
+      <div class="project">
+        <div class="project-number">03</div>
 
-        <!-- PROJECT 3 -->
-
-        <div class="project">
-
-            <div class="project-image project-three">
-
-                <span class="project-number">
-                    03
-                </span>
-
-                <div class="sphere"></div>
-
-            </div>
-
-
-            <div class="project-info">
-
-                <div>
-
-                    <h3>
-                        Movie Booking
-                    </h3>
-
-                    <p>
-                        ASP.NET Booking System
-                    </p>
-
-                </div>
-
-                <div class="arrow">
-                    ↗
-                </div>
-
-            </div>
-
+        <div class="project-info">
+          <span>Automation</span>
+          <h3>Autonomous Flow</h3>
         </div>
+      </div>
 
+
+      <div class="project">
+        <div class="project-number">04</div>
+
+        <div class="project-info">
+          <span>Creative Tech</span>
+          <h3>Future Interface</h3>
+        </div>
+      </div>
 
     </div>
 
-</section>
+  </section>
 
 
+  <!-- CONTACT -->
+  <section id="contact">
 
-<!-- =========================
-     SERVICES
-========================= -->
+    <div class="cta">
 
-<section id="services">
+      <div class="eyebrow">Let's Create</div>
 
-    <div class="section-label">
-        WHAT WE DO
-    </div>
+      <h2>
+        Have an idea?
+        <br>
+        Let's build it.
+      </h2>
 
+      <p>
+        Tell us what you're imagining and let's turn it into
+        something intelligent, interactive and unforgettable.
+      </p>
 
-    <h2 class="section-title">
-
-        Code with
-        <span class="gradient-text">
-            purpose.
-        </span>
-
-    </h2>
-
-
-    <div class="service-grid">
-
-
-        <div class="service">
-
-            <div class="service-number">
-                01
-            </div>
-
-            <h3>
-                Web Development
-            </h3>
-
-            <p>
-                Responsive, fast and scalable websites
-                built around real user needs.
-            </p>
-
-        </div>
-
-
-        <div class="service">
-
-            <div class="service-number">
-                02
-            </div>
-
-            <h3>
-                App Development
-            </h3>
-
-            <p>
-                Practical mobile and desktop applications
-                with clean architecture.
-            </p>
-
-        </div>
-
-
-        <div class="service">
-
-            <div class="service-number">
-                03
-            </div>
-
-            <h3>
-                UI / UX Design
-            </h3>
-
-            <p>
-                Interfaces that look premium,
-                feel intuitive and communicate clearly.
-            </p>
-
-        </div>
-
-
-        <div class="service">
-
-            <div class="service-number">
-                04
-            </div>
-
-            <h3>
-                3D Experiences
-            </h3>
-
-            <p>
-                Interactive visual experiences that turn
-                ordinary websites into memorable ones.
-            </p>
-
-        </div>
-
+      <a
+        href="mailto:hello@hetcodes.com"
+        class="cta-btn"
+      >
+        Start a Conversation →
+      </a>
 
     </div>
 
-</section>
+  </section>
 
 
+  <!-- FOOTER -->
+  <footer>
+    <div>© 2026 Het Codes. All rights reserved.</div>
+    <div>AI × 3D × Code</div>
+  </footer>
 
-<!-- =========================
-     ABOUT
-========================= -->
 
-<section class="about" id="about">
+  <!-- THREE.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-    <div class="about-text">
+  <script>
 
-        <div class="section-label">
-            ABOUT HET CODES
-        </div>
+    const container = document.getElementById("three-container");
 
+    const scene = new THREE.Scene();
 
-        <h2 class="section-title">
+    const camera = new THREE.PerspectiveCamera(
+      60,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
 
-            Small studio.
+    camera.position.z = 8;
 
-            <br>
 
-            <span class="gradient-text">
-                Big imagination.
-            </span>
-
-        </h2>
-
-
-        <p class="about-description">
-
-            Het Codes is a developer-led digital studio
-            focused on turning ideas into polished,
-            useful software.
-
-            <br><br>
-
-            We combine thoughtful design, modern
-            technology and hands-on development to
-            create digital products that people enjoy using.
-
-        </p>
-
-    </div>
-
-
-    <div class="about-box">
-
-        <div class="about-logo">
-            HC
-        </div>
-
-        <div class="about-small">
-            BUILD / CREATE / SHIP
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================
-     CONTACT
-========================= -->
-
-<section class="contact" id="contact">
-
-    <div>
-
-        <div class="section-label">
-            HAVE AN IDEA?
-        </div>
-
-
-        <h2>
-
-            Let's make something
-
-            <br>
-
-            <span>
-                worth remembering.
-            </span>
-
-        </h2>
-
-
-        <a
-            class="email"
-            href="mailto:hello@hetcodes.com"
-        >
-
-            hello@hetcodes.com
-
-            <span>
-                ↗
-            </span>
-
-        </a>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================
-     FOOTER
-========================= -->
-
-<footer>
-
-    <span>
-        © 2026 Het Codes
-    </span>
-
-    <span>
-        Built with curiosity.
-    </span>
-
-</footer>
-
-
-
-<!-- =========================
-     THREE.JS 3D SCRIPT
-========================= -->
-
-<script>
-
-    /* =========================
-       LOADER
-    ========================= */
-
-    window.addEventListener("load", function () {
-
-        setTimeout(function () {
-
-            document.getElementById("loader").style.opacity = "0";
-
-            setTimeout(function () {
-
-                document.getElementById("loader").style.display = "none";
-
-            }, 800);
-
-        }, 1200);
-
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true
     });
 
-
-
-    /* =========================
-       THREE.JS SCENE
-    ========================= */
-
-    const container =
-        document.getElementById("three-container");
-
-
-    const scene =
-        new THREE.Scene();
-
-
-    const camera =
-        new THREE.PerspectiveCamera(
-            55,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            100
-        );
-
-
-    camera.position.z = 6;
-
-
-    const renderer =
-        new THREE.WebGLRenderer({
-            antialias: true,
-            alpha: true
-        });
-
-
     renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio, 2)
+      Math.min(window.devicePixelRatio, 2)
     );
-
 
     renderer.setSize(
-        window.innerWidth,
-        window.innerHeight
+      window.innerWidth,
+      window.innerHeight
     );
 
+    container.appendChild(renderer.domElement);
 
-    container.appendChild(
-        renderer.domElement
+
+    /* ---------------- PARTICLES ---------------- */
+
+    const particleCount = 2200;
+
+    const positions = new Float32Array(
+      particleCount * 3
     );
 
+    for (let i = 0; i < particleCount; i++) {
 
+      const radius = 4 + Math.random() * 8;
 
-    /* =========================
-       MAIN 3D OBJECT
-    ========================= */
+      const theta =
+        Math.random() * Math.PI * 2;
 
-    const geometry =
-        new THREE.IcosahedronGeometry(
-            2,
-            3
+      const phi =
+        Math.acos(
+          (Math.random() * 2) - 1
         );
 
+      positions[i * 3] =
+        radius *
+        Math.sin(phi) *
+        Math.cos(theta);
 
-    const material =
-        new THREE.MeshStandardMaterial({
+      positions[i * 3 + 1] =
+        radius *
+        Math.sin(phi) *
+        Math.sin(theta);
 
-            color: 0x7657ff,
-
-            metalness: 0.8,
-
-            roughness: 0.2,
-
-            wireframe: true,
-
-            transparent: true,
-
-            opacity: 0.55
-
-        });
-
-
-    const object =
-        new THREE.Mesh(
-            geometry,
-            material
-        );
-
-
-    scene.add(object);
-
-
-
-    /* =========================
-       INNER OBJECT
-    ========================= */
-
-    const innerGeometry =
-        new THREE.IcosahedronGeometry(
-            1.55,
-            2
-        );
-
-
-    const innerMaterial =
-        new THREE.MeshStandardMaterial({
-
-            color: 0x100a2a,
-
-            metalness: 0.5,
-
-            roughness: 0.4
-
-        });
-
-
-    const inner =
-        new THREE.Mesh(
-            innerGeometry,
-            innerMaterial
-        );
-
-
-    scene.add(inner);
-
-
-
-    /* =========================
-       PARTICLES
-    ========================= */
-
-    const particleGeometry =
-        new THREE.BufferGeometry();
-
-
-    const particleCount = 1000;
-
-
-    const particlePositions =
-        new Float32Array(
-            particleCount * 3
-        );
-
-
-    for (
-        let i = 0;
-        i < particleCount * 3;
-        i += 3
-    ) {
-
-        const radius =
-            3 + Math.random() * 4;
-
-        const theta =
-            Math.random() * Math.PI * 2;
-
-        const phi =
-            Math.acos(
-                2 * Math.random() - 1
-            );
-
-
-        particlePositions[i] =
-            radius *
-            Math.sin(phi) *
-            Math.cos(theta);
-
-
-        particlePositions[i + 1] =
-            radius *
-            Math.sin(phi) *
-            Math.sin(theta);
-
-
-        particlePositions[i + 2] =
-            radius *
-            Math.cos(phi);
+      positions[i * 3 + 2] =
+        radius *
+        Math.cos(phi);
 
     }
 
 
-    particleGeometry.setAttribute(
-        "position",
+    const particleGeometry =
+      new THREE.BufferGeometry();
 
-        new THREE.BufferAttribute(
-            particlePositions,
-            3
-        )
+    particleGeometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(
+        positions,
+        3
+      )
     );
 
 
     const particleMaterial =
-        new THREE.PointsMaterial({
-
-            color: 0xb8aaff,
-
-            size: 0.018,
-
-            transparent: true,
-
-            opacity: 0.7
-
-        });
+      new THREE.PointsMaterial({
+        color: 0x8b5cf6,
+        size: 0.025,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending
+      });
 
 
     const particles =
-        new THREE.Points(
-            particleGeometry,
-            particleMaterial
-        );
-
+      new THREE.Points(
+        particleGeometry,
+        particleMaterial
+      );
 
     scene.add(particles);
 
 
+    /* ---------------- CENTRAL 3D OBJECT ---------------- */
 
-    /* =========================
-       LIGHTS
-    ========================= */
-
-    const ambientLight =
-        new THREE.AmbientLight(
-            0x7777aa,
-            1.5
-        );
-
-
-    scene.add(
-        ambientLight
-    );
-
-
-    const purpleLight =
-        new THREE.PointLight(
-            0x8d6cff,
-            30,
-            15
-        );
-
-
-    purpleLight.position.set(
-        3,
-        3,
-        4
-    );
-
-
-    scene.add(
-        purpleLight
-    );
-
-
-    const blueLight =
-        new THREE.PointLight(
-            0x20d9ff,
-            15,
-            12
-        );
-
-
-    blueLight.position.set(
-        -4,
-        -2,
+    const geometry =
+      new THREE.IcosahedronGeometry(
+        1.8,
         2
-    );
+      );
 
 
-    scene.add(
-        blueLight
-    );
+    const material =
+      new THREE.MeshBasicMaterial({
+        color: 0x8b5cf6,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.35
+      });
 
 
+    const sphere =
+      new THREE.Mesh(
+        geometry,
+        material
+      );
 
-    /* =========================
-       MOUSE INTERACTION
-    ========================= */
+    scene.add(sphere);
+
+
+    /* Inner glowing sphere */
+
+    const innerGeometry =
+      new THREE.SphereGeometry(
+        1.45,
+        32,
+        32
+      );
+
+
+    const innerMaterial =
+      new THREE.MeshBasicMaterial({
+        color: 0x3b82f6,
+        transparent: true,
+        opacity: 0.035
+      });
+
+
+    const innerSphere =
+      new THREE.Mesh(
+        innerGeometry,
+        innerMaterial
+      );
+
+    scene.add(innerSphere);
+
+
+    /* ---------------- MOUSE ---------------- */
 
     let mouseX = 0;
     let mouseY = 0;
 
+    document.addEventListener(
+      "mousemove",
+      (event) => {
 
-    window.addEventListener(
-        "mousemove",
-        function (event) {
+        mouseX =
+          (event.clientX /
+            window.innerWidth -
+            0.5) * 2;
 
-            mouseX =
-                (event.clientX /
-                window.innerWidth -
-                0.5) * 2;
+        mouseY =
+          (event.clientY /
+            window.innerHeight -
+            0.5) * 2;
 
-
-            mouseY =
-                (event.clientY /
-                window.innerHeight -
-                0.5) * 2;
-
-        }
+      }
     );
 
 
+    /* ---------------- ANIMATION ---------------- */
 
-    /* =========================
-       ANIMATION
-    ========================= */
+    const clock =
+      new THREE.Clock();
+
 
     function animate() {
 
-        requestAnimationFrame(
-            animate
-        );
+      requestAnimationFrame(animate);
+
+      const time =
+        clock.getElapsedTime();
 
 
-        object.rotation.x += 0.002;
+      particles.rotation.y =
+        time * 0.015;
 
-        object.rotation.y += 0.003;
-
-
-        inner.rotation.x -= 0.001;
-
-        inner.rotation.y -= 0.002;
+      particles.rotation.x =
+        time * 0.006;
 
 
-        particles.rotation.y += 0.0003;
+      sphere.rotation.x =
+        time * 0.12;
+
+      sphere.rotation.y =
+        time * 0.18;
 
 
-        object.rotation.x +=
-            mouseY * 0.0005;
+      innerSphere.rotation.y =
+        -time * 0.1;
 
 
-        object.rotation.y +=
-            mouseX * 0.0005;
+      camera.position.x +=
+        ((mouseX * 0.4) -
+          camera.position.x) * 0.025;
+
+      camera.position.y +=
+        ((-mouseY * 0.3) -
+          camera.position.y) * 0.025;
+
+      camera.lookAt(0, 0, 0);
 
 
-        camera.position.x +=
-            (mouseX * 0.3 -
-            camera.position.x) * 0.03;
-
-
-        camera.position.y +=
-            (-mouseY * 0.2 -
-            camera.position.y) * 0.03;
-
-
-        camera.lookAt(
-            scene.position
-        );
-
-
-        renderer.render(
-            scene,
-            camera
-        );
+      renderer.render(
+        scene,
+        camera
+      );
 
     }
-
 
     animate();
 
 
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
+    /* ---------------- RESIZE ---------------- */
 
     window.addEventListener(
-        "resize",
-        function () {
+      "resize",
+      () => {
 
-            camera.aspect =
-                window.innerWidth /
-                window.innerHeight;
+        camera.aspect =
+          window.innerWidth /
+          window.innerHeight;
 
+        camera.updateProjectionMatrix();
 
-            camera.updateProjectionMatrix();
+        renderer.setSize(
+          window.innerWidth,
+          window.innerHeight
+        );
 
-
-            renderer.setSize(
-                window.innerWidth,
-                window.innerHeight
-            );
-
-        }
+      }
     );
 
-</script>
-
+  </script>
 
 </body>
 </html>
